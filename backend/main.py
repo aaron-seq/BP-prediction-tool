@@ -133,9 +133,8 @@ def setup_preprocessor():
         logger.error("Error setting up preprocessor", error=str(e))
         return False
 
-@app.before_first_request
 def initialize_application():
-    """Initialize the application before first request."""
+    """Initialize the application components."""
     logger.info("Initializing Blood Pressure Prediction API")
     
     # Load model
@@ -335,15 +334,15 @@ if __name__ == '__main__':
     config.data.models_directory.mkdir(parents=True, exist_ok=True)
     config.data.logs_directory.mkdir(parents=True, exist_ok=True)
     
+    # Initialize application components before starting
+    initialize_application()
+    
     logger.info(
         "Starting Blood Pressure Prediction API",
         host=config.api.host,
         port=config.api.port,
         debug=config.api.debug
     )
-    
-    # Initialize components
-    initialize_application()
     
     # Run the application
     app.run(
